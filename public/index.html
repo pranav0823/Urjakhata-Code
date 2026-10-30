@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UrjaKhata: energy and carbon ledger for MSME foundries</title>
+<meta name="description" content="UrjaKhata prototype for the Schneider Electric Yuva Yodha Energy Tech Hackathon 2026 (Challenge 4): a 90-day simulated induction-furnace foundry with heat-by-heat energy, drift alerts, a Time-of-Day melt planner on real state tariffs, a CBAM-boundary carbon passport and IPMVP savings proof.">
+<meta name="theme-color" content="#17201D">
+<meta property="og:title" content="UrjaKhata: energy and carbon ledger for MSME foundries">
+<meta property="og:description" content="Meter-verified savings an owner sees in rupees every morning, and carbon data an EU buyer can use.">
+<meta property="og:image" content="img/architecture.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2317201D'/%3E%3Cpath d='M36 6 16 36h14l-4 22 22-32H34z' fill='%233DCD58'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script defer src="js/vendor/chart.umd.min.js"></script>
+<script defer src="data/urjakhata-data.js"></script>
+<script defer src="data/realdata.js"></script>
+<script defer src="js/app.js"></script>
+<script defer src="js/story.js"></script>
+</head>
+<body>
+<div class="ribbon" role="note">SIMULATED PLANT DATA: a 90-day digital twin calibrated to BEE foundry studies and FY 2026-27 Gujarat tariffs. <button type="button" data-goto="method">See sources and assumptions</button></div>
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="#overview">Urja<span>Khata</span></a>
+      <span class="tagline">The energy and carbon ledger for MSME foundries</span>
+      <button class="play" id="playBtn" type="button" aria-label="Play the guided demo"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg><span>Play demo</span></button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Views">
+      <a href="#overview">Impact</a>
+      <a href="#briefing">Owner briefing</a>
+      <a href="#drift">Heats and drift</a>
+      <a href="#machines">Machines</a>
+      <a href="#planner">Melt planner</a>
+      <a href="#carbon">Carbon passport</a>
+      <a href="#proof">Savings proof</a>
+      <a href="#stress">Stress tests</a>
+      <a href="#feasibility">Feasibility and cost</a>
+      <a href="#method">Sources and assumptions</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="app" tabindex="-1">
+  <noscript><p>This demo needs JavaScript to draw its charts.</p></noscript>
+  <p id="loading">Loading the 90-day ledger...</p>
+</main>
+<footer class="wrap">UrjaKhata prototype for the Schneider Electric Yuva Yodha Energy Tech Hackathon 2026, Challenge 4. The foundry data is simulated; the machine-split test also uses real factory data (IMDELD). Parameter sources are listed under Sources and assumptions. Source code: see the repository README.</footer>
+<div class="story" id="story" hidden role="region" aria-label="Guided demo">
+  <div class="in">
+    <div><div class="step" id="storyStep"></div><div class="cap" id="storyCap"></div></div>
+    <div class="nav"><button type="button" id="storyPrev">Back</button><button type="button" class="primary" id="storyNext">Next</button><button type="button" id="storyClose" aria-label="Close guided demo">Close</button></div>
+    <div class="prog"><i id="storyProg"></i></div>
+  </div>
+</div>
+</body>
+</html>

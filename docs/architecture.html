@@ -1,0 +1,77 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>UrjaKhata architecture</title>
+<style>
+body { margin: 0; background: #fff; font: 15px/1.35 "Liberation Sans", Arial, sans-serif; color: #1C2321; }
+.page { width: 1600px; padding: 36px 44px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; }
+h1 { font: 700 34px "Liberation Serif", Garamond, serif; margin: 0; }
+h1 span { color: #C8501E; }
+.sub { color: #5E6B68; font-size: 16px; margin-top: 4px; }
+.cols { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1.35fr 34px 1.15fr; align-items: stretch; }
+.col { display: flex; flex-direction: column; gap: 10px; }
+.head { background: #2E5E5A; color: #fff; border-radius: 6px; padding: 10px 14px; font: 700 18px "Liberation Serif", serif; }
+.head small { display: block; font: 13px "Liberation Sans", sans-serif; opacity: .85; margin-top: 2px; }
+.head.ink { background: #1C2321; }
+.head.or { background: #C8501E; }
+.box { background: #EEF2F1; border-radius: 6px; padding: 9px 64px 9px 12px; font-size: 14.5px; position: relative; }
+.box b { display: block; font-size: 15px; }
+.box i { font-style: normal; color: #5E6B68; font-size: 13px; }
+.box.out { background: #fff; border: 1.5px solid #C8501E; }
+.tag { position: absolute; top: 8px; right: 8px; font: 700 10.5px "Liberation Mono", monospace; padding: 2px 6px; border-radius: 3px; letter-spacing: .04em; }
+.tag.b { background: #2E5E5A; color: #fff; } .tag.n { background: #E8B04B; color: #1C2321; } .tag.s { background: #fff; color: #A86B00; border: 1px solid #A86B00; }
+.arrow { display: flex; align-items: center; justify-content: center; }
+.arrow div { width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; border-left: 18px solid #C8501E; }
+.flows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.flow { border-radius: 6px; padding: 10px 14px; font-size: 14px; border: 1.5px solid; }
+.flow b { display: block; font-size: 15px; margin-bottom: 2px; }
+.f1 { border-color: #2E5E5A; } .f2 { border-color: #C8501E; } .f3 { border-color: #B7811F; }
+.legend { display: flex; gap: 18px; font-size: 13px; color: #5E6B68; align-items: center; }
+</style></head>
+<body><div class="page">
+  <div><h1>Urja<span>Khata</span> system architecture</h1>
+  <div class="sub">One metered ledger for an MSME foundry: three meters in, three proofs out (owner savings, buyer carbon passport, lender savings report)</div></div>
+  <div class="legend"><span><span class="tag b" style="position:static">BUILT</span> working in the prototype (simulated plant)</span><span><span class="tag s" style="position:static">SIM</span> simulated by the digital twin in the prototype</span><span><span class="tag n" style="position:static">NEXT</span> in the pilot roadmap</span></div>
+  <div class="cols">
+    <div class="col">
+      <div class="head">1. Plant floor<small>three meters, no wiring into machines</small></div>
+      <div class="box"><span class="tag s">SIM</span><b>M1 mains meter, Class 1 Modbus</b><i>e.g. Schneider EasyLogic PM2220; CT 1000/5 A</i></div>
+      <div class="box"><span class="tag s">SIM</span><b>M2 furnace meter</b><i>415 V, 50 Hz side of the SCR/IGBT converter</i></div>
+      <div class="box"><span class="tag s">SIM</span><b>M3 compressor meter</b><i>load, unload and night running</i></div>
+      <div class="box"><span class="tag s">SIM</span><b>Heat log</b><i>charge weight and mix, pyrometer, slag, rejects (WhatsApp or voice)</i></div>
+      <div class="box"><span class="tag n">NEXT</span><b>LPG bills, pig iron certificates</b><i>read by OCR</i></div>
+      <div class="box"><span class="tag n">NEXT</span><b>Shielded RS485 bus</b><i>120 ohm termination, surge protection</i></div>
+    </div>
+    <div class="arrow"><div></div></div>
+    <div class="col">
+      <div class="head">2. Edge gateway<small>4G or Wi-Fi, low cost</small></div>
+      <div class="box"><span class="tag n">NEXT</span><b>Modbus RTU polling</b><i>power 1 s, energy 15 s, PF and THD 60 s</i></div>
+      <div class="box"><span class="tag n">NEXT</span><b>7-day local buffer</b><i>survives network outages</i></div>
+      <div class="box"><span class="tag n">NEXT</span><b>Data completeness check</b><i>CRC errors and gaps reported</i></div>
+      <div class="box"><span class="tag n">NEXT</span><b>Encrypted MQTT</b><i>to the cloud ledger</i></div>
+      <div class="box"><span class="tag b">BUILT</span><b>Foundry digital twin</b><i>BEE-calibrated physics; stands in for plant and gateway</i></div>
+    </div>
+    <div class="arrow"><div></div></div>
+    <div class="col">
+      <div class="head ink">3. Cloud ledger (Python)<small>one record per heat, per day, per shipment</small></div>
+      <div class="box"><span class="tag b">BUILT</span><b>Hybrid NILM</b><i>gradient boosting plus physics rules; confidence tier per machine</i></div>
+      <div class="box"><span class="tag b">BUILT</span><b>SEC engine</b><i>kWh per liquid tonne and per good tonne, every heat</i></div>
+      <div class="box"><span class="tag b">BUILT</span><b>Drift detector</b><i>CUSUM on residuals of a practice regression</i></div>
+      <div class="box"><span class="tag b">BUILT</span><b>ToD melt optimiser</b><i>MILP (HiGHS) on real PGVCL, MSEDCL, TNPDCL tariffs; shift limits</i></div>
+      <div class="box"><span class="tag b">BUILT</span><b>Carbon engine</b><i>CBAM boundary (direct + pig iron) and Scope 1+2 (CEA 0.675)</i></div>
+      <div class="box"><span class="tag b">BUILT</span><b>M&amp;V engine</b><i>IPMVP Option B and C with ASHRAE 14 uncertainty</i></div>
+    </div>
+    <div class="arrow"><div></div></div>
+    <div class="col">
+      <div class="head or">4. Outputs<small>who uses each one</small></div>
+      <div class="box out"><span class="tag b">BUILT</span><b>Owner: daily briefing</b><i>top 3 actions in rupees; English and Hindi; WhatsApp in pilot</i></div>
+      <div class="box out"><span class="tag b">BUILT</span><b>Dashboard with guided demo</b><i>static site on Vercel</i></div>
+      <div class="box out"><span class="tag b">BUILT</span><b>EU buyer: carbon passport</b><i>CBAM boundary per shipment, evidence trail, JSON</i></div>
+      <div class="box out"><span class="tag b">BUILT</span><b>Lender: savings proof</b><i>for ADEETIE, SIDBI 4E, ESCOs</i></div>
+      <div class="box out"><span class="tag n">NEXT</span><b>ERP or Tally sync</b><i>production and dispatch</i></div>
+    </div>
+  </div>
+  <div class="flows">
+    <div class="flow f1"><b>Energy data</b>Meters to gateway to ledger: kW every second, kWh every 15 s, stored 7 days at the edge, aggregated per heat and per day</div>
+    <div class="flow f2"><b>Production and fuel data</b>Operator log, WhatsApp or voice entries, OCR of bills, ERP; links energy to good tonnes</div>
+    <div class="flow f3"><b>Money flow</b>Owner saves on the bill and pays the subscription; lenders and ESCOs pay per verified project; buyers keep orders</div>
+  </div>
+</div></body></html>
